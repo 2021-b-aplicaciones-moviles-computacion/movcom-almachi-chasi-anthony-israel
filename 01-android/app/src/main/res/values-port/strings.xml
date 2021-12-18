@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="initial_text">Bienvenido Portrait</string>
+    <color name="back_color">#FFC570</color>
+    <color name="text_color">#D80049</color>
+</resources>

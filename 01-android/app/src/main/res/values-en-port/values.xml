@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="initial_text">Welcome Portrait</string>
+    <color name="back_color">#7BFF81</color>
+    <color name="text_color">#008A06</color>
+</resources>

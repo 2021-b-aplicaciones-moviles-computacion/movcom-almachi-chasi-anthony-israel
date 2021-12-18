@@ -1,0 +1,3 @@
+Guns N' Roses,EEUU,1987,Rock,Slash
+AC/DC,Australia,1973,Hard Rock,Angus Young
+Aerosmith,EEUU,1970,Joe Perry,Joe Perry
