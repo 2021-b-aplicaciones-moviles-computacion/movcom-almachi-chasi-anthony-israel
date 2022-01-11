@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myapplication">
+    package="com.example.examen_1b">
 
     <application
         android:allowBackup="true"
@@ -8,21 +8,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication">
+        android:theme="@style/Theme.Examen_1B">
         <activity
-            android:name=".CIntentExplicitoParametros"
+            android:name=".GUI_EditarPokemon"
             android:exported="false" />
         <activity
-            android:name=".BListView"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
+            android:name=".GUI_AnadirPokemon"
+            android:exported="false" />
         <activity
-            android:name=".ACicloVida"
+            android:name=".GUI_Pokemon"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_EditarEntrenador"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_AnadirEntrenador"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_Home"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
