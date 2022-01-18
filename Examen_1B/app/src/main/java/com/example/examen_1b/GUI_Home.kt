@@ -46,30 +46,37 @@ class GUI_Home : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.i("ciclo-vida", "onResume")
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            // Guardar las variables
+            // primitivos
+            putInt("idItemSeleccionado",idItemSeleccionado)
+            putParcelableArrayList("arregloEntrenador",BBaseDeDatosMemoria.arregloEntrenador)
+            putParcelableArrayList("arregloEntrenadorXpokemon",BBaseDeDatosMemoria.arregloEntrenadorXPokemon)
+            putParcelableArrayList("arregloPokemon",BBaseDeDatosMemoria.arregloPokemon)
+        }
+        super.onSaveInstanceState(outState)
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        Log.i("ciclo-vida", "onRestart")
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        idItemSeleccionado = savedInstanceState.getInt("idItemSeleccionado")
+        BBaseDeDatosMemoria.arregloEntrenador = savedInstanceState.getParcelableArrayList<BEntrenador>("arregloEntrenador")!!
+        BBaseDeDatosMemoria.arregloEntrenadorXPokemon = savedInstanceState.getParcelableArrayList<BEntrenadorXPokemon>("arregloEntrenadorXpokemon")!!
+        BBaseDeDatosMemoria.arregloPokemon = savedInstanceState.getParcelableArrayList<BPokemon>("arregloPokemon")!!
+        if (idItemSeleccionado == null){
+            idItemSeleccionado = 0
+        }
+        val listViewEntrenador = findViewById<ListView>(R.id.lv_Entrenador)
+        val adaptador = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            BBaseDeDatosMemoria.arregloEntrenador
+        )
+        listViewEntrenador.adapter = adaptador
+        adaptador.notifyDataSetChanged()
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.i("ciclo-vida", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("ciclo-vida", "onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("ciclo-vida", "onDestroy")
-    }
 
     override fun onCreateContextMenu(
         menu: ContextMenu?,

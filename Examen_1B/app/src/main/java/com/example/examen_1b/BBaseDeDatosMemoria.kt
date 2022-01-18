@@ -32,22 +32,22 @@ class BBaseDeDatosMemoria {
 
             // cargar datos entrenador x pokemon
             arregloEntrenadorXPokemon.add(
-                BEntrenadorXPokemon(1,2)
+                BEntrenadorXPokemon(1, "sque", 1,2)
             )
             arregloEntrenadorXPokemon.add(
-                BEntrenadorXPokemon(1, 3)
+                BEntrenadorXPokemon(2, "bol", 1, 3)
             )
             arregloEntrenadorXPokemon.add(
-                BEntrenadorXPokemon(2, 3)
+                BEntrenadorXPokemon(3, "bolba",2, 3)
             )
             arregloEntrenadorXPokemon.add(
-                BEntrenadorXPokemon(2,1)
+                BEntrenadorXPokemon(4, "pika",2,1)
             )
             arregloEntrenadorXPokemon.add(
-                BEntrenadorXPokemon(2,2)
+                BEntrenadorXPokemon(5, "squerel",2,2)
             )
             arregloEntrenadorXPokemon.add(
-                BEntrenadorXPokemon(3,2)
+                BEntrenadorXPokemon(6, "querel",3,2)
             )
 
         }

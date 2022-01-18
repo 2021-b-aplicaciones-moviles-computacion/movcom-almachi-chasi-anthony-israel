@@ -16,8 +16,10 @@ class GUI_Pokemon : AppCompatActivity() {
     var idItemSeleccionado = 0
     var idEntrenadorOwner = 0
     var posicionEntrenador = 0
+    var selectedItem = 0
 
     var pokemonLista = arrayListOf<String>()
+    var idEntrenadorXpokemon = arrayListOf<Int>()
 
     var resultAddNewPokemon = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -53,12 +55,12 @@ class GUI_Pokemon : AppCompatActivity() {
         Log.i("ciclo-vida", "onStart")
 
         pokemonLista = arrayListOf()
+        idEntrenadorXpokemon = arrayListOf()
+
 
         posicionEntrenador = intent.getIntExtra("posicionEditar",1)
 
         Log.i("posEntrendaor","${posicionEntrenador}")
-
-        var idPokemon = arrayListOf<Int>()
 
         val tvNombreBEntrenadorXPokemon = findViewById<TextView>(R.id.tv_NombreEntrenadorXPokemon)
 
@@ -73,15 +75,8 @@ class GUI_Pokemon : AppCompatActivity() {
 
         BBaseDeDatosMemoria.arregloEntrenadorXPokemon.forEachIndexed{ indice: Int, entrenadorXpokemon : BEntrenadorXPokemon ->
             if (idEntrenadorOwner == entrenadorXpokemon.idEntrenador){
-                idPokemon.add(entrenadorXpokemon.idPokemon)
-            }
-        }
-
-        idPokemon.forEach{ idPokemon:Int ->
-            BBaseDeDatosMemoria.arregloPokemon.forEachIndexed{ indice: Int, pokemon : BPokemon ->
-                if (idPokemon == pokemon.idPokemon){
-                    pokemonLista.add(pokemon.nombre.toString())
-                }
+                pokemonLista.add(entrenadorXpokemon.nombreEntrenadorXPokemon.toString())
+                idEntrenadorXpokemon.add(entrenadorXpokemon.idBEntrenadorXPokemon)
             }
         }
 
@@ -106,10 +101,10 @@ class GUI_Pokemon : AppCompatActivity() {
             startActivity(intentAtrasPokemon)
         }
 
-        val btnListBD = findViewById<Button>(R.id.btn_ListBD)
-        btnListBD.setOnClickListener {
-            BBaseDeDatosMemoria.arregloEntrenadorXPokemon.forEach{entrenadorXpokemon: BEntrenadorXPokemon ->
-                Log.i("PokemonsRestantes","${entrenadorXpokemon.idEntrenador} -> ${entrenadorXpokemon.idPokemon}")
+        val btnVerBD = findViewById<Button>(R.id.btn_verBD)
+        btnVerBD.setOnClickListener {
+            BBaseDeDatosMemoria.arregloEntrenadorXPokemon.forEach{ entrenadorXPokemon:BEntrenadorXPokemon ->
+                Log.i("BD","${entrenadorXPokemon.idBEntrenadorXPokemon} -> ${entrenadorXPokemon.nombreEntrenadorXPokemon} -> ${entrenadorXPokemon.idEntrenador} -> ${entrenadorXPokemon.idPokemon}")
             }
         }
 
@@ -127,13 +122,9 @@ class GUI_Pokemon : AppCompatActivity() {
         inflater.inflate(R.menu.menu_pokemon, menu)
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         val id = info.position
-        var nombrePokemon: String = pokemonLista.elementAt(id)
-        BBaseDeDatosMemoria.arregloPokemon.forEach{ pokemon: BPokemon ->
-            if(nombrePokemon == pokemon.nombre){
-                idItemSeleccionado = pokemon.idPokemon
-            }
-        }
-        Log.i("idPokemon", "ID ${idItemSeleccionado}")
+        selectedItem = id
+        idItemSeleccionado = idEntrenadorXpokemon.elementAt(id)
+        Log.i("id entrenadorXpokemon", "ID ${idItemSeleccionado}")
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -156,7 +147,7 @@ class GUI_Pokemon : AppCompatActivity() {
         clase: Class<*>
     ) {
         val intentEditarPokemon = Intent(this, clase)
-        intentEditarPokemon.putExtra("idPokemon", idItemSeleccionado)
+        intentEditarPokemon.putExtra("pokemon", idItemSeleccionado)
         intentEditarPokemon.putExtra("posicionEntrenadoreditar",posicionEntrenador)
         resultEditarPokemon.launch(intentEditarPokemon)
     }
@@ -174,27 +165,18 @@ class GUI_Pokemon : AppCompatActivity() {
         idPokemonAeliminar: Int
     ){
         val listViewPokemon = findViewById<ListView>(R.id.lv_Pokemon)
-        var nombrePokemonAeliminar = ""
 
-        BBaseDeDatosMemoria.arregloPokemon.forEach{ pokemon: BPokemon ->
-            if(idPokemonAeliminar == pokemon.idPokemon){
-                nombrePokemonAeliminar = pokemon.nombre.toString()
+        var auxListaEntrenadorXpokemon = arrayListOf<BEntrenadorXPokemon>()
+
+        BBaseDeDatosMemoria.arregloEntrenadorXPokemon.forEach{ entrenadorXPokemon:BEntrenadorXPokemon ->
+            if(idPokemonAeliminar != entrenadorXPokemon.idBEntrenadorXPokemon){
+                auxListaEntrenadorXpokemon.add(entrenadorXPokemon)
             }
         }
 
-        var listaPokemonsSobrantes = arrayListOf<BEntrenadorXPokemon>()
-        Log.i("IdPokemonAeliminar","${idPokemonAeliminar}")
+        BBaseDeDatosMemoria.arregloEntrenadorXPokemon = auxListaEntrenadorXpokemon
 
-        BBaseDeDatosMemoria.arregloEntrenadorXPokemon.forEachIndexed{ indice: Int, entrenadorXpokemon: BEntrenadorXPokemon->
-            if(!((idPokemonAeliminar == entrenadorXpokemon.idPokemon) and (idEntrenadorOwner == entrenadorXpokemon.idEntrenador))){
-                listaPokemonsSobrantes.add(entrenadorXpokemon)
-                Log.i("EliminarPokemon","${entrenadorXpokemon.idEntrenador} -> ${entrenadorXpokemon.idPokemon}")
-            }
-        }
-
-        BBaseDeDatosMemoria.arregloEntrenadorXPokemon = listaPokemonsSobrantes
-
-        pokemonLista.remove(nombrePokemonAeliminar)
+        pokemonLista.removeAt(selectedItem)
 
         val adaptador = ArrayAdapter(
             this,

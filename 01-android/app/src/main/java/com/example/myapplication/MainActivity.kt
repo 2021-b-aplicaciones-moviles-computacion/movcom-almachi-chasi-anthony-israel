@@ -90,6 +90,12 @@ class MainActivity : AppCompatActivity() {
             )
             startActivityForResult(intentConRespuesta,CODIGO_RESPUESTA_INTENT_IMPLICITO)
         }
+
+        val botonRecyclerView = findViewById<Button>(R.id.btn_ir_recycler_view)
+        botonRecyclerView.setOnClickListener {
+            abrirActividadConParametros(GRecyclerVIew::class.java)
+        }
+
     }
 
     fun abrirActividadConParametros(
