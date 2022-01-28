@@ -28,7 +28,10 @@ class FRecyclerViewAdaptorNombreCedula (
                 this.anadirLike()
             }
         }
-        fun anadirLike() {}
+        fun anadirLike() {
+            this.numeroLikes = this.numeroLikes + 1
+            likesTextView.text = this.numeroLikes.toString()
+        }
     }
 
     // Setaear el layout que vamos a utilizar
