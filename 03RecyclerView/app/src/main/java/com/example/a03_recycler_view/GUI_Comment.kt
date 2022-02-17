@@ -79,7 +79,12 @@ class GUI_Comment : AppCompatActivity() {
         btn_add_comment.setOnClickListener {
             BBaseDeDatosMemoria.arregloPosts.forEach { post:BPost ->
                 if(active_post.id_post == post.id_post){
-                    var num_comments = Integer.parseInt(post.action_comment_count)
+                    var num_comments = -1
+                    if(post.action_comment_count.equals("")){
+                        num_comments = 0
+                    }else {
+                        num_comments = Integer.parseInt(post.action_comment_count)
+                    }
                     num_comments += 1
                     post.action_comment_count = num_comments.toString()
                     tv_number_comments.text = post.action_comment_count

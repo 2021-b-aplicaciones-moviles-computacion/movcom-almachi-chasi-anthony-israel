@@ -73,6 +73,7 @@ class GUI_Home : AppCompatActivity() {
         BBaseDeDatosMemoria.arregloPosts.forEach { post:BPost ->
             post.current_user = active_user.id_persona
         }
+
         inicializarRecyclerView(BBaseDeDatosMemoria.arregloPosts, this, recyclerViewPost)
 
         val btn_post = findViewById<ImageButton>(R.id.btn_add_post)

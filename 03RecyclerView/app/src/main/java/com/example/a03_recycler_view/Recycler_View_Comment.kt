@@ -75,47 +75,45 @@ class Recycler_View_Comment(
             val intentHomeToComment = Intent(contexto, GUI_Comment::class.java)
             intentHomeToComment.putExtra("current-post", current_Comment)
             ContextCompat.startActivity(contexto, intentHomeToComment, Bundle())
-
-            /*this.number_comments = this.number_comments + 1
-            var idPost = post_id.text
-            var current_post = BPost("",1,"","","","","","","","")
-            BBaseDeDatosMemoria.arregloPosts.forEach { post : BPost ->
-                if(post.id_post == idPost){
-                    var count = 0
-                    if(!post.action_comment_count.equals("")) count = Integer.parseInt(post.action_comment_count)
-                    if(this.number_comments == 1){
-                        count = count + 1
-                    }else {
-                        count = count - 1
-                        this.number_comments = 0
-                    }
-                    Log.i("COMENT","${idPost} \t ${count}")
-                    if(count == 0){
-                        post.action_comment_count = ""
-                    }else{
-                        post.action_comment_count = count.toString()
-                    }
-                    current_post = post
-                }
-            }
-            comment_count_TextView.text = current_post.action_comment_count*/
         }
 
         fun increaseNumberRetwet(){
             this.number_retwets = this.number_retwets + 1
             var idComment = comment_id.text
             var current_comment = BComment("","",1,"","","","","","","","")
+            var current_actionPerUserComment = BActionPerUserComment("","",0,0)
+
+            var found_action_user = 0
             BBaseDeDatosMemoria.arregloComment.forEach { comment : BComment ->
                 if(comment.id_comment == idComment){
+
+                    current_comment = comment
+
+                    BBaseDeDatosMemoria.arregloActionPerUserComment.forEach { actionXuserComment:BActionPerUserComment ->
+                        if ( current_comment.id_comment.equals(actionXuserComment.id_coment) &&  current_comment.current_user.equals(actionXuserComment.id_persona)){
+                            current_actionPerUserComment = actionXuserComment
+                            found_action_user = 1
+                        }
+                    }
+                    if (found_action_user == 0){
+                        current_actionPerUserComment.id_persona = current_comment.current_user
+                        current_actionPerUserComment.id_coment = current_comment.id_comment
+                        current_actionPerUserComment.action_like = 0
+                        current_actionPerUserComment.action_retwet = 0
+                        BBaseDeDatosMemoria.arregloActionPerUserComment.add(current_actionPerUserComment)
+                    }
+
+                    current_actionPerUserComment.action_retwet += 1
+
                     var count = 0
                     if(!comment.action_retwet_count.equals("")) count = Integer.parseInt(comment.action_retwet_count)
-                    if(this.number_retwets == 1){
+                    if(current_actionPerUserComment.action_retwet == 1){
                         count = count + 1
                         action_retwet_ImageView.setImageResource(R.drawable.ic_retweeted)
                     }else {
                         count = count - 1
                         action_retwet_ImageView.setImageResource(R.drawable.ic_retweet)
-                        this.number_retwets = 0
+                        current_actionPerUserComment.action_retwet = 0
                     }
                     Log.i("RETWET","${idComment} \t ${count}")
                     if(count == 0){
@@ -123,27 +121,47 @@ class Recycler_View_Comment(
                     }else{
                         comment.action_retwet_count = count.toString()
                     }
-                    current_comment = comment
                 }
             }
             retwet_count_TextView.text = current_comment.action_retwet_count
         }
 
         fun increaseNumberLike(){
-            this.number_likes = this.number_likes + 1
             var idComment = comment_id.text
             var current_Comment = BComment("","",1,"","","","","","","","")
+            var current_actionPerUserComment = BActionPerUserComment("","",0,0)
+
+            var found_action_user = 0
             BBaseDeDatosMemoria.arregloComment.forEach { comment : BComment ->
                 if(comment.id_comment == idComment){
+
+                    current_Comment = comment
+
+                    BBaseDeDatosMemoria.arregloActionPerUserComment.forEach { actionXuserComment:BActionPerUserComment ->
+                        if ( current_Comment.id_comment.equals(actionXuserComment.id_coment) &&  current_Comment.current_user.equals(actionXuserComment.id_persona)){
+                            current_actionPerUserComment = actionXuserComment
+                            found_action_user = 1
+                        }
+                    }
+                    if (found_action_user == 0){
+                        current_actionPerUserComment.id_persona = current_Comment.current_user
+                        current_actionPerUserComment.id_coment = current_Comment.id_comment
+                        current_actionPerUserComment.action_like = 0
+                        current_actionPerUserComment.action_retwet = 0
+                        BBaseDeDatosMemoria.arregloActionPerUserComment.add(current_actionPerUserComment)
+                    }
+
+                    current_actionPerUserComment.action_like += 1
+
                     var count = 0
                     if(!comment.action_like_count.equals("")) count = Integer.parseInt(comment.action_like_count)
-                    if(this.number_likes == 1){
+                    if(current_actionPerUserComment.action_like== 1){
                         count = count + 1
                         action_like_ImageView.setImageResource(R.drawable.ic_liked)
                     }else {
                         count = count - 1
                         action_like_ImageView.setImageResource(R.drawable.ic_like)
-                        this.number_likes = 0
+                        current_actionPerUserComment.action_like = 0
                     }
                     Log.i("LIKE","${idComment} \t ${count}")
                     if(count == 0){
@@ -151,7 +169,6 @@ class Recycler_View_Comment(
                     }else{
                         comment.action_like_count = count.toString()
                     }
-                    current_Comment = comment
                 }
             }
             like_count_TextView.text = current_Comment.action_like_count
@@ -183,12 +200,22 @@ class Recycler_View_Comment(
         holder.post_content_TextView.text = comment.post_content
         holder.action_comment_ImageView
         holder.comment_count_TextView.text = comment.action_comment_count
-        holder.action_retwet_ImageView
         holder.retwet_count_TextView.text = comment.action_retwet_count
-        holder.action_like_ImageView
         holder.like_count_TextView.text = comment.action_like_count
         holder.action_share_ImageView
         holder.current_user_TextView.text = comment.current_user
+
+        BBaseDeDatosMemoria.arregloActionPerUserComment.forEach { actionXuserComent:BActionPerUserComment ->
+            if(holder.current_user_TextView.text.equals(actionXuserComent.id_persona) && holder.comment_id.text.equals(actionXuserComent.id_coment)){
+                if(actionXuserComent.action_like == 1){
+                    holder.action_like_ImageView.setImageResource(R.drawable.ic_liked)
+                }
+                if(actionXuserComent.action_retwet == 1){
+                    holder.action_retwet_ImageView.setImageResource(R.drawable.ic_retweeted)
+                }
+            }
+        }
+
     }
 
     override fun getItemCount(): Int {

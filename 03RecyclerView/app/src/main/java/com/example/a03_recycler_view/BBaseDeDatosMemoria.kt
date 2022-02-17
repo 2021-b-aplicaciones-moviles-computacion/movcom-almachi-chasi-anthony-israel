@@ -8,6 +8,8 @@ class BBaseDeDatosMemoria {
         val arregloPersona = arrayListOf<BPersona>()
         val arregloPosts = arrayListOf<BPost>()
         val arregloComment = arrayListOf<BComment>()
+        val arregloActionPerUser = arrayListOf<BActionsPerUser>()
+        val arregloActionPerUserComment = arrayListOf<BActionPerUserComment>()
 
         init {
             arregloPersona.add(
@@ -23,10 +25,10 @@ class BBaseDeDatosMemoria {
 
 
             arregloPosts.add(
-                BPost("3",R.drawable.user3_profilepic,"Armin","user3","1min","Hola estes es mi tercer tweet","","","","")
+                BPost("3",R.drawable.user3_profilepic,"Armin","user3","1min","Hola estes es mi tercer tweet","","","5","")
             )
             arregloPosts.add(
-                BPost("2",R.drawable.user2_profilepic,"Eren","user2","5min","Hola estes es mi segundo tweet","1","","","")
+                BPost("2",R.drawable.user2_profilepic,"Eren","user2","5min","Hola estes es mi segundo tweet","1","2","","")
             )
             arregloPosts.add(
                 BPost("1",R.drawable.user1_profilepic,"Mikasa","user1","1h","Hola estes es mi primer tweet","4","","","")
@@ -37,7 +39,7 @@ class BBaseDeDatosMemoria {
                 BComment("1","1",R.drawable.user1_profilepic,"Mikasa","user1","1min","primer comentario","","","","")
             )
             arregloComment.add(
-                BComment("2","1",R.drawable.user2_profilepic,"Eren","user2","1min","Segundo comentario","","","","")
+                BComment("2","1",R.drawable.user2_profilepic,"Eren","user2","1min","Segundo comentario","","","1","")
             )
             arregloComment.add(
                 BComment("3","1",R.drawable.user1_profilepic,"Mikasa","user1","1min","terceeeerr","","","","")
@@ -49,6 +51,20 @@ class BBaseDeDatosMemoria {
                 BComment("5","2",R.drawable.user3_profilepic,"Armin","user3","1min","otro comentario - otro post","","","","")
             )
 
+            arregloActionPerUser.add(
+                BActionsPerUser("1","3",0,1)
+            )
+            arregloActionPerUser.add(
+                BActionsPerUser("1","2",1,0)
+            )
+            arregloActionPerUser.add(
+                BActionsPerUser("3","2",1,0)
+            )
+
+
+            arregloActionPerUserComment.add(
+                BActionPerUserComment("1","2",0,1)
+            )
 
         }
 
