@@ -16,31 +16,32 @@ import com.google.firebase.firestore.ktx.firestore
 
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val boton_login = findViewById<Button>(R.id.btn_login)
-        boton_login.setOnClickListener {
+        // Empezar el proceso de login o sign up
+        val botonLogin = findViewById<Button>(R.id.btn_login)
+        botonLogin.setOnClickListener {
             llamarLoginUsuario()
         }
-
-        val boton_logout = findViewById<Button>(R.id.btn_logout)
-        boton_logout.setOnClickListener {
+        // Salir
+        val botonLogout = findViewById<Button>(R.id.btn_logout)
+        botonLogout.setOnClickListener {
             solicitarSalirDelAplicativo()
         }
-
-        val boton_producto = findViewById<Button>(R.id.btn_ir_producto)
-        boton_producto.setOnClickListener {
+        // Producto
+        val botonProducto = findViewById<Button>(R.id.btn_ir_producto)
+        botonProducto.setOnClickListener {
             val intent = Intent(
                 this,
                 CProducto::class.java
             )
             startActivity(intent)
         }
-
-        val boton_restaurante = findViewById<Button>(R.id.btn_it_restaurante)
-        boton_restaurante.setOnClickListener {
+        // Restaurante
+        val botonRestarurante = findViewById<Button>(R.id.btn_it_restaurante)
+        botonRestarurante.setOnClickListener {
             val intent = Intent(
                 this,
                 DRestaurante::class.java
@@ -49,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
     fun llamarLoginUsuario(){
         val providers = arrayListOf(
             // lista de los proveedores
@@ -68,114 +68,113 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun onAtivityResuly(requestCode:Int, resultCode:Int, data: Intent?){
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (resultCode){
-            200-> {
-                if(resultCode == Activity.RESULT_OK){
+        when (requestCode) {
+            200 -> {
+                if (resultCode == Activity.RESULT_OK) {
                     val usuario: IdpResponse? = IdpResponse.fromResultIntent(data)
-                    if (usuario != null){
-                        if (usuario.isNewUser == true){
-                            Log.i("firebase-login","Nuevo Usuario")
-                            registerUsuarioPorPrimeraVez(usuario)
-                        }else {
-                            Log.i("firebase-login","Usuario Antiguo")
+                    if (usuario != null) {
+                        if (usuario.isNewUser == true) {
+                            Log.i("firebase-login", "Nuevo Usuario")
+                            registrarUsuarioPorPrimeraVez(usuario)
+                        } else {
+                            // setearUsuarioFirebase()
+                            Log.i("firebase-login", "Usuario Antiguo")
                         }
                     }
-                }else{
-                    Log.i("firebase-login","El usuario cancelo")
+                } else {
+                    Log.i("firebase-login", "El usuario cancelo")
                 }
             }
         }
     }
-
-    fun registerUsuarioPorPrimeraVez(usuario: IdpResponse){
+    fun registrarUsuarioPorPrimeraVez(usuario: IdpResponse) {
         val usuarioLogeado = FirebaseAuth
             .getInstance()
             .getCurrentUser()
-        if(usuario.email != null && usuarioLogeado != null){
-            val db = Firebase.firestore
-            val roles = arrayListOf("usuario")
-            val email = usuario.email
+        if (usuario.email != null && usuarioLogeado != null) {
+            // roles : ["usuario", "admin"]
+            val db = Firebase.firestore // obtenemos referencia
+            val roles = arrayListOf("usuario") // creamos el arreglo de permisos
+            val email = usuario.email // nada
             val uid = usuarioLogeado.uid
 
-            val nuevoUsuario = hashMapOf<String, Any>(
+            val nuevoUsuario = hashMapOf<String, Any>( // { roles:... uid:...}
                 "roles" to roles,
                 "uid" to uid,
                 "email" to email.toString()
             )
-
             db.collection("usuario")
-                .document(email.toString())
+                // .document() // Me crea el identificador el Firestore
+                .document(email.toString()) // El identificador lo seteo yo
                 .set(nuevoUsuario)
                 .addOnSuccessListener {
-                    Log.i("firebas-firestore","Se creo")
+                    Log.i("firebase-firestore", "Se creo")
                     setearUsuarioFirebase()
                 }
-                .addOnFailureListener{
-                    Log.i("firebase-firestore","Fallo")
+                .addOnFailureListener {
+                    Log.i("firebase-firestore", "Fallo")
                 }
 
+
         }else{
-            Log.i("firebase-login","Error no mail ni usuario")
+            Log.i("firebase-login", "Error no email ni usuario")
         }
     }
 
     fun setearUsuarioFirebase(){
-        val instanceAuth = FirebaseAuth.getInstance()
-        val usuarioLocal = instanceAuth.currentUser
-        if(usuarioLocal != null){
-            if(usuarioLocal.email != null){
+        val instanciaAuth = FirebaseAuth.getInstance()
+        val usuarioLocal = instanciaAuth.currentUser
+        if (usuarioLocal != null) {
+            if (usuarioLocal.email != null) {
                 val db = Firebase.firestore
-                val referencia =db
+                val referencia = db
                     .collection("usuario")
-                    .document(usuarioLocal.email.toString())
-
+                    .document(usuarioLocal.email.toString()) // /usuario/a@...com
                 referencia
                     .get()
                     .addOnSuccessListener {
-                        val usuarioCargado:FirestoreUsuarioDto? =
+                        val usuarioCargado: FirestoreUsuarioDto? =
                             it.toObject(FirestoreUsuarioDto::class.java)
                         if(usuarioCargado != null){
                             BAuthUsuario.usuario = usuarioCargado
                         }
                         setearBienvenida()
-                        Log.i("firebase-firestore","Usuario cargado")
+                        Log.i("firebase-firestore", "Usuario cargado")
                     }
-                    .addOnFailureListener{
-                        Log.i("firebase-firestore","Fallo cargar usuario")
+                    .addOnFailureListener {
+                        Log.i("firebase-firestore", "Fallo cargar usuario")
                     }
             }
         }
     }
-
     fun setearBienvenida(){
         val textViewBienvenida = findViewById<TextView>(R.id.textView)
         val botonLogin = findViewById<Button>(R.id.btn_login)
         val botonLogout = findViewById<Button>(R.id.btn_logout)
         val botonProducto = findViewById<Button>(R.id.btn_ir_producto)
         val botonRestaurante = findViewById<Button>(R.id.btn_it_restaurante)
-
         if(BAuthUsuario.usuario != null){
             textViewBienvenida.text = "Bienvenido ${BAuthUsuario.usuario?.email}"
             botonLogin.visibility = View.INVISIBLE
             botonLogout.visibility = View.VISIBLE
-            botonProducto.visibility = View.VISIBLE
             botonRestaurante.visibility = View.VISIBLE
+            botonProducto.visibility = View.VISIBLE
+
         }else{
-            textViewBienvenida.text = "Ingrese al applicativo"
+            textViewBienvenida.text = "Ingresa al aplicativo"
             botonLogin.visibility = View.VISIBLE
             botonLogout.visibility = View.INVISIBLE
-            botonProducto.visibility = View.INVISIBLE
             botonRestaurante.visibility = View.INVISIBLE
+            botonProducto.visibility = View.INVISIBLE
         }
     }
-
     fun solicitarSalirDelAplicativo(){
         AuthUI
             .getInstance()
             .signOut(this)
-            .addOnCompleteListener{
+            .addOnCompleteListener {
                 BAuthUsuario.usuario = null
                 setearBienvenida()
             }

@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -78,7 +75,22 @@ class GUI_Home : AppCompatActivity() {
 
         val btn_post = findViewById<ImageButton>(R.id.btn_add_post)
         btn_post.setOnClickListener {
-            abrirGUI_PostConParametros(GUI_Post::class.java)
+            abrirActividadConParametros(GUI_Post::class.java)
+        }
+
+        val btn_home_search = findViewById<ImageButton>(R.id.btn_home_search)
+        btn_home_search.setOnClickListener {
+            abrirActividadConParametros(GUI_Search::class.java)
+        }
+
+        val btn_home_notification = findViewById<ImageButton>(R.id.btn_home_notification)
+        btn_home_notification.setOnClickListener {
+            abrirActividadConParametros(GUI_Notification::class.java)
+        }
+
+        val btn_home_message = findViewById<ImageButton>(R.id.btn_home_messages)
+        btn_home_message.setOnClickListener {
+            abrirActividadConParametros(GUI_Message::class.java)
         }
 
     }
@@ -101,7 +113,7 @@ class GUI_Home : AppCompatActivity() {
 
     }
 
-    fun abrirGUI_PostConParametros(
+    fun abrirActividadConParametros(
         clase: Class<*>
     ) {
         val intentAddNewPost = Intent(this, clase)

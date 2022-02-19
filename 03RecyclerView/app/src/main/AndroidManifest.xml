@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.03RecyclerView">
         <activity
+            android:name=".GUI_Message"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_Search"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_Notification"
+            android:exported="false" />
+        <activity
             android:name=".GUI_Comment"
             android:exported="false" />
         <activity
