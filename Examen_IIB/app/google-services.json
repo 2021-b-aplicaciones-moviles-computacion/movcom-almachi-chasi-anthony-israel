@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "63726237031",
+    "project_id": "movcomexameniib",
+    "storage_bucket": "movcomexameniib.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63726237031:android:dbbc2a6af067d871be2bc2",
+        "android_client_info": {
+          "package_name": "com.example.exameniib"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63726237031-c4l4qpqh4veef628jmp1lc6b1alj2mo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHoUSGTwEL4QixxkGap6eY6YKa6u0hBbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63726237031-c4l4qpqh4veef628jmp1lc6b1alj2mo4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
