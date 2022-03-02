@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="initial_text">Bienvenido Landscape</string>
+    <color name="back_color">#8C9DFF</color>
+    <color name="text_color">#2B387E</color>
+</resources>
