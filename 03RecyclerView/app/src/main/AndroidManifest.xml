@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.03RecyclerView">
         <activity
+            android:name=".GUI_Help"
+            android:exported="false" />
+        <activity
             android:name=".GUI_Message"
             android:exported="false" />
         <activity

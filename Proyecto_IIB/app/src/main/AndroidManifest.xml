@@ -10,6 +10,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_IIB">
         <activity
+            android:name=".GUI_ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_UserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_Help"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_TransactionsHistorial"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_ResultTransaction"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_NewTransaction"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_HomeAccount"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_LoginPassword"
+            android:exported="false" />
+        <activity
+            android:name=".GUI_SelectTypeLogin"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
