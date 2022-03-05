@@ -78,7 +78,7 @@
         app:srcCompat="@drawable/threepoints" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_start_app"
         android:layout_width="262sp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="104dp"
